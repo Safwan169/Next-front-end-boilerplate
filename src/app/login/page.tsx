@@ -115,7 +115,12 @@ const LoginForm: React.FC = () => {
         toast("Event has been created", {
             description: "Sunday, December 03, 2023 at 9:00 AM",
             position: "top-right",
-            duration: 4000,
+            action: {
+                label: "x",
+                onClick: () => {
+                   
+                },
+            },
         })
         setIsLoading(false);
     };
@@ -127,7 +132,6 @@ const LoginForm: React.FC = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
             <AnimatedBackground />
- 
             <div className="relative w-full max-w-md">
                 <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
                     <LoginHeader />

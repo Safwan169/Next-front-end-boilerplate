@@ -1,10 +1,14 @@
 'use client';
-import React from 'react';
+import React, { use } from 'react';
 import { AnimatedBackground } from '../login/componants/AnimatedHeader';
 import { RegisterHeader } from '../login/componants/RegisterHearder';
 import { InputField } from '@/components/ui/Field';
 import { Mail, Lock, User } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import Link from 'next/link';
+import { toast } from 'sonner';
+import { useRegisterMutation } from '@/features/user/userApi';
+import { useRouter } from 'next/navigation';
 // import { Button } from '@/components/ui/button';
 
 interface RegisterFormData {
@@ -16,16 +20,23 @@ interface RegisterFormData {
 
 const Register: React.FC = () => {
   const [focusedField, setFocusedField] = React.useState<string>('');
+   const navigate=useRouter();
+  const [registerData,{isLoading, isError}] = useRegisterMutation();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<RegisterFormData>();
+ 
 
-  const onSubmit = (data: RegisterFormData) => {
+  const onSubmit = async(data: RegisterFormData) => {
     console.log('Registration Data:', data);
-    // 🔥 Here you can call your backend API for registration
+    // await registerData(data).unwrap();
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    toast.success('Registration successful!', {position: 'top-right', duration: 3000 });
+
+    navigate.push('/dashboard');
   };
 
   return (
@@ -113,7 +124,7 @@ const Register: React.FC = () => {
             {/* Submit Button */}
             <button
               type='submit'
-              className='w-full bg-gradient-to-r from-violet-500 to-pink-500 text-white font-medium py-2 rounded-xl shadow-md hover:opacity-90 transition duration-200'
+              className='w-full cursor-pointer bg-gradient-to-r from-violet-500 to-pink-500 text-white font-medium py-2 rounded-xl shadow-md hover:opacity-90 transition duration-200'
             >
               Create Account
             </button>
@@ -121,12 +132,12 @@ const Register: React.FC = () => {
             {/* Already have an account */}
             <p className='text-center text-sm text-gray-600'>
               Already have an account?{' '}
-              <a
+              <Link
                 href='/login'
                 className='text-violet-600 font-medium hover:underline'
               >
                 Login
-              </a>
+              </Link>
             </p>
           </form>
         </div>
